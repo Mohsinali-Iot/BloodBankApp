@@ -1,8 +1,10 @@
 const INITIALSTATE={
-    name:'Mohsin',
+    // name:'Mohsin',
     // users:[],
     // current_users:{},
     // Items:[],
+   Donors:[],
+   
       
     // searchTerm:'',
     //     {
@@ -50,15 +52,15 @@ const INITIALSTATE={
 
 
 export default (state=INITIALSTATE,action)=>{
-    console.log("action===>" ,action.payload)
-    // switch(action.type)
-    // {
-    //     case "Items":
-    //     return({
-    //         ...state,
-    //         Items:[...state.Items,action.payload]
+    // console.log("action===>" ,action.payload)
+    switch(action.type)
+    {
+        case "Donors":
+        return({
+            ...state,
+            Donors:[...state.Donors,action.payload],
 
-    //     })
-    // }
+        })
+    }
     return state;
 }

@@ -5,14 +5,20 @@ import { Container,Content,Button} from 'native-base';
 import{connect} from 'react-redux'
 import {set_data} from '../../store/action'
 import {facebook_login,get_data} from '../../store/action'
-import Form from '../screen/form'
+
+// import Form from '../screen/form'
 
 
 function SignIn(props){
+  useEffect(() => {
+    // console.log("Running")
+    props.get_data()
+  },[]);
 
-console.log("Home Props",props)
+console.log("Home Props Donors====>",props.donors)
   return(
       <Container  style={styles.container}>
+
         {/* <Button onPress={()=>props.get_data()}>
           <Text>CLick me</Text>
         </Button> */}
@@ -21,7 +27,7 @@ console.log("Home Props",props)
             <Text style={{fontSize:40,textAlign:'center'}}>Register Yourself</Text>
           {/* </Content> */}
             <Image style={styles.img} source={require('../../Images/logo.png')}/>
-              <Container style={{marginTop:20}}>
+              <View style={{marginTop:20}}>
                   <Button onPress={()=>props.facebook_login()} style={{backgroundColor:'green'}} block success>
                     <Text>Login With FaceBook</Text>
                   </Button>
@@ -38,9 +44,31 @@ console.log("Home Props",props)
                   <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
                       <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
                   </Button>
+                  <Button onPress={()=>{props.navigation.navigate('Form')}}>
+                    <Text>Donate Your Blood</Text>
+                  </Button>
                 </View>
-          </Container>
-          <Form/>
+          </View>
+          <View>
+            <Text style={{fontSize:50,fontWeight:'bold',backgroundColor:'black',color:'white', textAlign:'center',marginTop:40,borderBottomWidth:3,borderTopWidth:3,borderColor:'red'}}>ALL Donors</Text>
+          {
+            
+            // props.Donors.map((v,i) => <Text key={i}>{v.name}</Text>)}
+            props.donors[0].map((v,i)=>{
+              return(
+                <View>
+                  <View  style={{borderWidth:1,backgroundColor:'black',marginTop:20}}>
+                      <Text style={{color:'red',textAlign:'right',fontWeight:'bold',fontSize:17}}>{"Blood-Group: " + v.BloodGroup}</Text>
+                      <Text key={i} style={{color:'red',paddingBottom:5}}>{"Full-Name: " + v.First_name + " " + v.Last_name}</Text>
+                      <Text style={{color:'red',paddingBottom:5}}>{"Email: " + v.Email}</Text>
+                      <Text style={{color:'red',paddingBottom:5}}>{"Number: " + v.Numbers}</Text>
+                      {/* <Text style={{color:'red',paddingBottom:5}}>{"Blood-Group: " + v.BloodGroup}</Text> */}
+                  </View>
+                </View>
+              )
+            })
+          }
+        </View>
           </ScrollView>
       </Container>
     );
@@ -62,10 +90,10 @@ console.log("Home Props",props)
         }
     });
 
-  const mapStateToProps=(state)=>{
-      return state
+  const mapStateToProps=(state)=>({
+    donors:[state.Donors],
   
-  }
+  })
 
   const mapDispatchToProps=(dispatch)=>({
       set_data:()=>dispatch(set_data()),

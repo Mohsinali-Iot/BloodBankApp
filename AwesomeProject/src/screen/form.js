@@ -1,30 +1,82 @@
 import React,{useState,useEffect} from 'react';
 import {StyleSheet,View,Image,ScrollView,Text} from 'react-native';
 import database from '@react-native-firebase/database';
-import { Container,Form,Item,Input,Label,Picker} from 'native-base';
+import { Container,Form,Item,Input,Label,Picker,Icon,Button} from 'native-base';
 import{connect} from 'react-redux'
 import {set_data} from '../../store/action'
-import {facebook_login,get_data} from '../../store/action'
 
 
 function Donorform(props){
-
-// console.log("Home Props",props)
+  const [mydata,set_mydata]=useState({
+    First_name:'',
+    Last_name:'',
+    Email:'',
+    Numbers:'',
+    BloodGroup:''
+  })
+  // console.log("Data",mydata)
+  const handle_click=()=>{
+    // console.log("Mydata",mydata)
+        var key=database().ref('images/').push().key
+        // console.log(key)
+        database().ref('/').child('donors/' + key).set(mydata).then(()=>{
+          // console.log("mydata".mydata)
+        })
+        set_mydata({
+          First_name:'',
+          Last_name:'',
+          Email:'',
+          Numbers:'',
+          BloodGroup:''
+        })
+        // props.navigation.navigate('Home')
+        
+    // set_mydata({
+    //   First_name:'Mohsin',
+    //   Last_name:'Ali',
+    //   Email:'mohsin@gmail.com',
+    //   Number:'0000-1234567',
+    //   BloodGroup:'A+'
+    // })
+  }
   return(
+
+
       <Container  style={styles.container}>
-           <Form>
-            <Item floatingLabel>
-              <Label>First Name</Label>
-              <Input />
+        <Text style={{fontSize:30,textAlign:'center'}}>Donate Your Blood</Text>
+        {/* <Button onPress={()=>handle_click()}>
+          <Text>Click</Text>
+      </Button> */}
+           <Form style={{borderColor:'black',borderRadius:1,borderWidth:1,marginTop:30,paddingTop:20,paddingBottom:20}}>
+           <Item>
+              <Input placeholder="FirstName" value={mydata.First_name} onChangeText={(e)=>set_mydata((prevState) => ({
+             ...prevState,First_name:e
+    }))} />
             </Item>
-            <Item floatingLabel>
-              <Label>Last Name</Label>
-              <Input />
+            <Item last>
+              <Input placeholder="LastName" value={mydata.Last_name} onChangeText={(e)=>set_mydata((prevState) => ({
+             ...prevState,Last_name:e
+    }))} />
             </Item>
-            <Item floatingLabel>
-              <Label>Email</Label>
-              <Input />
+            <Item >
+              <Input placeholder="Email" value={mydata.Email} onChangeText={(e)=>set_mydata((prevState) => ({
+             ...prevState,Email:e
+    }))}/>
             </Item>
+            <Item >
+              <Input placeholder="Number" value={mydata.Numbers} onChangeText={(e)=>set_mydata((prevState) => ({
+             ...prevState,Numbers:e
+    }))} />
+            </Item>
+            <Item >
+              <Input placeholder="Blood Group" value={mydata.BloodGroup} onChangeText={(e)=>set_mydata((prevState) => ({
+             ...prevState,BloodGroup:e
+    }))} />
+            </Item>
+            
+            <Button onPress={()=>handle_click()} full danger style={{marginTop:20}}>
+            <Text>Submit</Text>
+          </Button>
           </Form>
      </Container>
     );
@@ -58,5 +110,5 @@ function Donorform(props){
 //   })
 
 
-export default connect(null,null)(Donorform);
-// export default connect () SignUp;
+// export default connect(null,null)(Donorform);
+export default Donorform;

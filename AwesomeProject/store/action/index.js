@@ -10,7 +10,6 @@ const set_data=()=>{
       })
   }
 }
-let login=false;
 const facebook_login=()=>
 {
   return async()=>
@@ -53,7 +52,6 @@ const facebook_login=()=>
     .then(()=>{
         alert("Successful Login")
         database().ref('/').child("data").push({name:'Kalim'}) 
-        login=true;
         // dispatch(NavigationActions.navigate({ routeName: 'Home' }))
     })
     })
@@ -64,16 +62,17 @@ const facebook_login=()=>
 }
 
 const get_data=()=>{
+      
 
       return(dispatch)=>{
-        database().ref('data').on('value', snapshot => {
-        console.log('User data: ', snapshot.val());
+        database().ref('/').child('donors').on("child_added", snapshot => {
+        // console.log('User data: ', snapshot.val());
         dispatch({
-          type:"Items",
+          type:"Donors",
           payload:snapshot.val()
         })
-        })   
-}
+        })
+      }   
 }
     
 export {
