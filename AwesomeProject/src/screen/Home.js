@@ -13,17 +13,20 @@ import {facebook_login, set_data} from '../../store/action'
 // import { useState } from 'react';
 function Home(props){
   console.log("props===>",props.set_data())
-  const [email,setEmail]=useState("")
-  const [password,setPassword]=useState("")
-  const save_data=()=>{
-      let user={
-          email,
-          password,
-      }
-      database().ref('/').child('users').push(user)
-      setEmail('')
-      setPassword('')
-  }
+  const [login,loginfunc]=useState({
+    islogin:false
+  })
+  // const [email,setEmail]=useState("")
+  // const [password,setPassword]=useState("")
+  // const save_data=()=>{
+  //     let user={
+  //         email,
+  //         password,
+  //     }
+  //     database().ref('/').child('users').push(user)
+  //     setEmail('')
+  //     setPassword('')
+  // }
   // const facebook_login= async()=>
   // {
   //   // Attempt login with permissions
@@ -53,12 +56,20 @@ function Home(props){
   //   });
   // }
   return(
-      <View>
-        <Text>HomePage</Text>
-        <Button onPress={()=>props.set_data()}>
-          <Text>CLick me</Text>
-        </Button>
-      </View>
+    <View style={{flexDirection:'row',marginTop:50,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
+      <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
+          <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
+      </Button>
+      <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+          <Image style={{width:30 , height:30}} source={require('../../Images/aboutus.png')}/>
+      </Button>
+      <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+          <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
+      </Button>
+      <Button onPress={()=>{props.navigation.navigate('Form')}}>
+        <Text>Donate Your Blood</Text>
+      </Button>
+  </View> 
         // <Container  style={styles.container}>
         //   {/* <Header style={{backgroundColor:'red'}}> */}
         //     {/* <Left>

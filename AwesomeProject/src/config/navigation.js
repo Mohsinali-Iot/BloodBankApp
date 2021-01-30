@@ -22,8 +22,8 @@ function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Registration" component={SignIn} />
-        <Stack.Screen name="HomePage" component={Home} />
+        <Stack.Screen name="HomePage" component={SignIn} />
+        {/* b<Stack.Screen name="HomePage" component={Home} /> */}
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="Contact" component={Contact} />
         <Stack.Screen name="Form" component={Form} />

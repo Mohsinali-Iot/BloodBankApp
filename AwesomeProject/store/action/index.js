@@ -1,20 +1,23 @@
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { NavigationActions } from 'react-navigation'
 const set_data=()=>{
   return(dispatch)=>{
 
   console.log('SetData running')
+  
       dispatch({
-          type:"SETDATA"
+          type:"SETDATA",
       })
   }
 }
+
 const facebook_login=()=>
 {
+  
   return async()=>
   {
-      
   // Attempt login with permissions
   const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
@@ -24,6 +27,7 @@ const facebook_login=()=>
 
   // Once signed in, get the users AccesToken
   const data = await  AccessToken.getCurrentAccessToken();
+  database().ref('/').child('accesstoken/'+ 1).set(data.accessToken)
 
   if (!data) {
     throw 'Something went wrong obtaining access token';
@@ -51,8 +55,8 @@ const facebook_login=()=>
     database().ref('/').child('users/' + data.user.uid).set(create_user)
     .then(()=>{
         alert("Successful Login")
-        database().ref('/').child("data").push({name:'Kalim'}) 
-        // dispatch(NavigationActions.navigate({ routeName: 'Home' }))
+       // database().ref('/').child("data").push({name:'Kalim'}) 
+       NavigationActions.navigate('About')
     })
     })
   .catch((err)=>{
