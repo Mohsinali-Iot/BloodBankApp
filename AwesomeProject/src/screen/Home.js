@@ -1,131 +1,119 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {StyleSheet,View,Image,ScrollView,Text} from 'react-native';
 import database from '@react-native-firebase/database';
-// import auth from '@react-native-firebase/auth';
-// import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import { Container,Content,Button} from 'native-base';
+import { Container,Content,Button,Icon,Item,Input, Header} from 'native-base';
 import{connect} from 'react-redux'
-// import {set_data} from '../../store/action'
-import {facebook_login, set_data} from '../../store/action'
+import {set_data} from '../../store/action'
+import {facebook_login,get_data} from '../../store/action'
+import SearchInput, { createFilter } from 'react-native-search-filter';
 
-// import { LoginButton, AccessToken } from 'react-native-fbsdk';
-// import { LoginManager } from "react-native-fbsdk";
-// import { useState } from 'react';
+
 function Home(props){
-  console.log("props===>",props.set_data())
-  const [login,loginfunc]=useState({
-    islogin:false
+  const KEYS_TO_FILTERS = ['BloodGroup','First_name'];
+  
+var [token,settoken]=useState(null)
+var [searchTerm,setsearch]=useState('')
+
+const searchUpdated=(term)=>{
+  setsearch(term)
+}
+
+  useEffect(() => {
+    
+  database().ref('/').child('accesstoken').on("child_added", snapshot => {
+    settoken(snapshot.val())
+    database().ref('accesstoken').remove();
+
+    //console.log('Token: ', snapshot.val());
   })
-  // const [email,setEmail]=useState("")
-  // const [password,setPassword]=useState("")
-  // const save_data=()=>{
-  //     let user={
-  //         email,
-  //         password,
-  //     }
-  //     database().ref('/').child('users').push(user)
-  //     setEmail('')
-  //     setPassword('')
-  // }
-  // const facebook_login= async()=>
-  // {
-  //   // Attempt login with permissions
-  //   const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-  
-  //   if (result.isCancelled) {
-  //     throw 'User cancelled the login process';
-  //   }
-  
-  //   // Once signed in, get the users AccesToken
-  //   const data = await AccessToken.getCurrentAccessToken();
-  
-  //   if (!data) {
-  //     throw 'Something went wrong obtaining access token';
-  //   }
-  
-  //   // Create a Firebase credential with the AccessToken
-  //   const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-  
-  //   // Sign-in the user with the credential
-  //   return auth().signInWithCredential(facebookCredential)
-  //   .then((data)=>{
-  //     console.log(data)
-  //   })
-  //   .catch((err)=>{
-  //     console.log("Err===>",err)
-  //   });
-  // }
+
+  },[token]);
+  useEffect(()=>{
+    props.get_data()
+  },[])
+// console.log("Home Props Donors====>",facebookCredential)
+  if(token===null)
+  {
   return(
-    <View style={{flexDirection:'row',marginTop:50,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
-      <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
-          <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
-      </Button>
-      <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>
-          <Image style={{width:30 , height:30}} source={require('../../Images/aboutus.png')}/>
-      </Button>
-      <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
-          <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
-      </Button>
-      <Button onPress={()=>{props.navigation.navigate('Form')}}>
-        <Text>Donate Your Blood</Text>
-      </Button>
-  </View> 
-        // <Container  style={styles.container}>
-        //   {/* <Header style={{backgroundColor:'red'}}> */}
-        //     {/* <Left>
-        //       <Button transparent>
-        //         <Icon name='menu' />
-        //       </Button>
-        //     </Left> */}
-        //     {/* <Body>
-        //       <Title>Blood Donors</Title>
-        //     </Body>
-        //     <Right /> */}
-        //   {/* </Header> */}
-        //   <ScrollView style={styles.scrollView}>
-        //     {/* <Container style={styles.img}> */}
-        //     <Content>
-        //       <Text style={{fontSize:40,textAlign:'center'}}>Register Yourself</Text>
-        //     </Content>
-        //       <Image style={styles.img} source={require('../../Images/logo.png')}/>
-        //     {/* </Container> */}
-        //     <Container style={{marginTop:20}}>
-        //           {/* <Header /> */}
-        //           {/* <Content> */}
-        //             <Button onPress={()=>props.facebook_login()} style={{backgroundColor:'green'}} block success>
-        //               <Text>Login With FaceBook</Text>
-        //             </Button>
-        //           {/* </Content> */}
-        //           <View>
-        //             <Image style={styles.img1} source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33lxKZGvgNDEEqsiLBxL6pkZBtr34oqaALg&usqp=CAU'}}/>
-        //           </View>
-        //           <View style={{flexDirection:'row',marginTop:20,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
-        //             <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
-        //                 <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
-        //             </Button>
-        //             <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>
-        //                 <Image style={{width:30 , height:30}} source={require('../../Images/aboutus.png')}/>
-        //             </Button>
-        //             <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
-        //                 <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
-        //             </Button>
-        //           </View>
-        //           <View>
-        //             <Button onPress={()=>props.set_data()}>
-        //               <Text>Click Me</Text>
-        //             </Button>
-        //           </View>
-        //     </Container>
-        //   </ScrollView>
-        // </Container>
-      );
+
+      <Container  style={styles.container}>
+        {/* <ScrollView> */}
+          
+            <Text style={{fontSize:40,textAlign:'center'}}>Register Yourself</Text>
+
+            <Image style={styles.img} source={require('../../Images/logo.png')}/>
+              <View style={{marginTop:20}}>
+                  <Button onPress={()=>props.facebook_login()} style={{backgroundColor:'green'}} block success>
+                    <Text>Login With FaceBook</Text>
+                  </Button>
+   
+                <View>
+                  <Image style={styles.img1} source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS33lxKZGvgNDEEqsiLBxL6pkZBtr34oqaALg&usqp=CAU'}}/>
+                </View>
+              </View>
+        </Container>
+  )}
+  else{
+    const filteredDonors = props.donors[0].filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+    // console.log("Fitered==>",filteredEmails)
+    // console.log("Search Term:",searchTerm)
+    return(
+        <Container>
+          <ScrollView>
+          <Header searchBar rounded>
+          <SearchInput 
+          onChangeText={(term) => {searchUpdated(term) }} 
+          style={styles.searchInput}
+          placeholder="Serach by Blood Group Or By Person Name"
+          />
+          </Header>
+          <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:20,borderBottomWidth:3}}>Welcome To Life Care Blood Bank</Text>
+
+          <Image style={styles.img} source={require('../../Images/logo.png')}/>
+
+          <Button style={{backgroundColor:'red',borderColor:'black',borderWidth:2}} onPress={()=>{props.navigation.navigate('Form')}}>
+              <Text style={{width:'100%',textAlign:'center',fontSize:20,fontWeight:'bold',color:'white'}}>Donate Your Blood</Text>
+          </Button>
+          
+          <View>
+            <Text style={{fontSize:50,fontWeight:'bold',backgroundColor:'black',color:'white', textAlign:'center',marginTop:40,borderBottomWidth:3,borderTopWidth:3,borderColor:'red'}}>ALL Donors</Text>
+          {
+            
+            // props.Donors.map((v,i) => <Text key={i}>{v.name}</Text>)}
+            filteredDonors.map((v,i)=>{
+              return(
+                <View key={i}>
+                  <View  style={{borderWidth:1,backgroundColor:'black',marginTop:20}}>
+                      <Text style={{color:'red',textAlign:'right',fontWeight:'bold',fontSize:17}}>{"Blood-Group: " + v.BloodGroup}</Text>
+                      <Text  style={{color:'red',paddingBottom:5}}>{"Full-Name: " + v.First_name + " " + v.Last_name}</Text>
+                      <Text style={{color:'red',paddingBottom:5}}>{"Email: " + v.Email}</Text>
+                      <Text style={{color:'red',paddingBottom:5}}>{"Number: " + v.Numbers}</Text>
+                      {/* <Text style={{color:'red',paddingBottom:5}}>{"Blood-Group: " + v.BloodGroup}</Text> */}
+                  </View>
+                </View>
+              )
+            })
+          }
+        </View>
+        <View style={{flexDirection:'row',marginTop:50,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
+            <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
+            </Button>
+            <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30}} source={require('../../Images/aboutus.png')}/>
+            </Button>
+            <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
+            </Button>
+          </View>
+        </ScrollView>
+      </Container>
+    );
+    }
     }
   const styles=StyleSheet.create({
       container: {
         flex: 1,
-      },
-      scrollView: {
-        marginHorizontal: 20,
       },
       img:{
         width:350,
@@ -136,17 +124,28 @@ function Home(props){
         width: 300,
         height: 100,
         resizeMode: 'cover',
-        
-        }
+        },
+        searchInput:{
+          margin:10,
+          padding: 10,
+          borderColor: '#CCC',
+          borderWidth: 1,
+          backgroundColor:'white',
+          width:300,
+        },
     });
-const mapStateToProps=(state)=>{
-    return state
-  
-  }
 
-const mapDispatchToProps=dispatch=>({
-    set_data:()=>dispatch(set_data()),
-      // facebook_login:()=>dispatch(facebook_login())
-})
+  const mapStateToProps=(state)=>({
+    donors:[state.Donors],
+  
+  })
+
+  const mapDispatchToProps=(dispatch)=>({
+      set_data:()=>dispatch(set_data()),
+      facebook_login:()=>dispatch(facebook_login()),
+      get_data:()=>dispatch(get_data()),
+      facebook_logout:()=>dispatch(facebook_logout())
+  })
+
+
 export default connect(mapStateToProps,mapDispatchToProps)(Home);
-// export default Home

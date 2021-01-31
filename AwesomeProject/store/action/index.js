@@ -81,9 +81,6 @@ const get_data=()=>{
     
 export {
     facebook_login,
-    set_data,
-    // gotoform,
-    // gotologin,
     get_data,
 }
 
