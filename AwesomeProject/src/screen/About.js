@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet,View,Text,ScrollView,Image} from 'react-native';
 import {Button} from 'native-base';
 
-function About(){
+function About(props){
     return(
       <View>
         <ScrollView>
@@ -111,7 +111,7 @@ function About(){
           </Text>
         </View>
         <View style={{flexDirection:'row',marginTop:50,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
-            <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
+            <Button onPress={()=>props.navigation.navigate('HomePage')}style={{backgroundColor:'blue',alignSelf:'center'}}>
                 <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
             </Button>
             <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>

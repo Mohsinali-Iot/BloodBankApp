@@ -1,14 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import {StyleSheet,View,Image,ScrollView,Text} from 'react-native';
 import database from '@react-native-firebase/database';
-import { Container,Content,Button,Icon,Item,Input, Header} from 'native-base';
+import { Container,Button,Header} from 'native-base';
 import{connect} from 'react-redux'
 import {set_data} from '../../store/action'
 import {facebook_login,get_data} from '../../store/action'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 
-
-import { LoginManager, AccessToken } from 'react-native-fbsdk';
 function Home(props){
   const KEYS_TO_FILTERS = ['BloodGroup'];
   
@@ -33,22 +31,18 @@ const facebook_logout=()=>{
     settoken(snapshot.val())
     database().ref('accesstoken').remove();
 
-    //console.log('Token: ', snapshot.val());
   })
 
   },[token]);
   useEffect(()=>{
     props.get_data()
   },[])
-// console.log("Home Props Donors====>",facebookCredential)
   if(token===null)
   {
   return(
 
       <Container  style={styles.container}>
-        {/* <ScrollView> */}
-          
-            <Text style={{fontSize:40,textAlign:'center'}}>Register Yourself</Text>
+        <Text style={{fontSize:40,textAlign:'center'}}>Register Yourself</Text>
 
             <Image style={styles.img} source={require('../../Images/logo.png')}/>
               <View style={{marginTop:20}}>
@@ -65,8 +59,6 @@ const facebook_logout=()=>{
   else{
     console.log("C_User==>",props.current_user)
     const filteredDonors = props.donors[0].filter(createFilter(searchTerm, KEYS_TO_FILTERS))
-    // console.log("Fitered==>",filteredEmails)
-    // console.log("Search Term:",searchTerm)
     return(
         <Container>
           <ScrollView>
@@ -92,8 +84,7 @@ const facebook_logout=()=>{
             <Text style={{fontSize:50,fontWeight:'bold',backgroundColor:'black',color:'white', textAlign:'center',marginTop:40,borderBottomWidth:3,borderTopWidth:3,borderColor:'red'}}>ALL Donors</Text>
           {
             
-            // props.Donors.map((v,i) => <Text key={i}>{v.name}</Text>)}
-            filteredDonors.map((v,i)=>{
+           filteredDonors.map((v,i)=>{
               return(
                 <View key={i}>
                   <View  style={{borderWidth:1,backgroundColor:'black',marginTop:20}}>
@@ -101,8 +92,7 @@ const facebook_logout=()=>{
                       <Text  style={{color:'red',paddingBottom:5}}>{"Full-Name: " + v.First_name + " " + v.Last_name}</Text>
                       <Text style={{color:'red',paddingBottom:5}}>{"Email: " + v.Email}</Text>
                       <Text style={{color:'red',paddingBottom:5}}>{"Number: " + v.Numbers}</Text>
-                      {/* <Text style={{color:'red',paddingBottom:5}}>{"Blood-Group: " + v.BloodGroup}</Text> */}
-                  </View>
+                 </View>
                 </View>
               )
             })

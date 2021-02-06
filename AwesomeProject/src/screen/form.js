@@ -1,12 +1,10 @@
-import React,{useState,useEffect} from 'react';
-import {StyleSheet,View,Image,ScrollView,Text} from 'react-native';
+import React,{useState} from 'react';
+import {StyleSheet,Text} from 'react-native';
 import database from '@react-native-firebase/database';
-import { Container,Form,Item,Input,Label,Picker,Icon,Button} from 'native-base';
-import{connect} from 'react-redux'
-import {set_data} from '../../store/action'
+import { Container,Form,Item,Input,Button} from 'native-base';
 
 
-function Donorform(props){
+function Donorform(){
   const [mydata,set_mydata]=useState({
     First_name:'',
     Last_name:'',
@@ -83,17 +81,4 @@ function Donorform(props){
         }
     });
 
-//   const mapStateToProps=(state)=>{
-//       return state
-  
-//   }
-
-//   const mapDispatchToProps=(dispatch)=>({
-//       set_data:()=>dispatch(set_data()),
-//       facebook_login:()=>dispatch(facebook_login()),
-//       get_data:()=>dispatch(get_data())
-//   })
-
-
-// export default connect(null,null)(Donorform);
 export default Donorform;
