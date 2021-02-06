@@ -66,7 +66,7 @@ const facebook_logout=()=>{
           <SearchInput 
           onChangeText={(term) => {searchUpdated(term) }} 
           style={styles.searchInput}
-          placeholder="Serach by Blood Group Or By Person Name"
+          placeholder="Serach by Blood Group"
           />
            </Header>
        
