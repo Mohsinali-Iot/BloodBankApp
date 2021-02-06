@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet,View,Text,ScrollView} from 'react-native';
-// import {  } from "";
+import {StyleSheet,View,Text,ScrollView,Image} from 'react-native';
+import {Button} from 'native-base';
+
 function About(){
     return(
       <View>
@@ -109,31 +110,24 @@ function About(){
             are over 70 and have given blood in the last 2 years
           </Text>
         </View>
+        <View style={{flexDirection:'row',marginTop:50,backgroundColor:'blue',height:60,justifyContent:'space-evenly'}}>
+            <Button style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30,backgroundColor:'white'}} source={require('../../Images/homeicon.png')}/>
+            </Button>
+            <Button onPress={()=>props.navigation.navigate('About')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30}} source={require('../../Images/aboutus.png')}/>
+            </Button>
+            <Button onPress={()=>props.navigation.navigate('Contact')} style={{backgroundColor:'blue',alignSelf:'center'}}>
+                <Image style={{width:30 , height:30}} source={require('../../Images/contactus.png')}/>
+            </Button>
+          </View>
         </ScrollView>
       </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column',
-      backgroundColor: 'black',
-    },
-    preview: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    capture: {
-      flex: 0,
-      backgroundColor: '#fff',
-      borderRadius: 5,
-      padding: 15,
-      paddingHorizontal: 20,
-      alignSelf: 'center',
-      margin: 20,
-    },
+
     oject:{
       fontSize:30,
       marginTop:20,
@@ -142,7 +136,7 @@ const styles = StyleSheet.create({
       textAlign:'center'
     },
     txt1:{
-      margin:10,
+      margin:20,
     },
     txt2:{
       marginLeft:20,

@@ -2,25 +2,19 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { NavigationActions } from 'react-navigation'
-const set_data=()=>{
-  return(dispatch)=>{
-
-  console.log('SetData running')
-  
-      dispatch({
-          type:"SETDATA",
-      })
-  }
-}
 
 const facebook_login=()=>
 {
   
-  return async()=>
+  return async(dispatch)=>
   {
+    if (AccessToken.getCurrentAccessToken() != null){
+
+    LoginManager.logOut()
+
   // Attempt login with permissions
   const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-
+  
   if (result.isCancelled) {
     throw 'User cancelled the login process';
   }
@@ -43,6 +37,10 @@ const facebook_login=()=>
     console.log(data.user.displayName)
     console.log(data.user.uid)
     console.log(data.user.photoURL)
+    dispatch({
+      type:'current_user',
+      current_users:data.user.displayName,
+    })
     
     
     
@@ -54,14 +52,13 @@ const facebook_login=()=>
     }
     database().ref('/').child('users/' + data.user.uid).set(create_user)
     .then(()=>{
-        alert("Successful Login")
-       // database().ref('/').child("data").push({name:'Kalim'}) 
        NavigationActions.navigate('About')
     })
     })
   .catch((err)=>{
     console.log("Err===>",err)
   });
+}
   }
 }
 

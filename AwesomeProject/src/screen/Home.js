@@ -8,18 +8,27 @@ import {facebook_login,get_data} from '../../store/action'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 
 
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 function Home(props){
-  const KEYS_TO_FILTERS = ['BloodGroup','First_name'];
+  const KEYS_TO_FILTERS = ['BloodGroup'];
   
 var [token,settoken]=useState(null)
 var [searchTerm,setsearch]=useState('')
+var [user,setuser]=useState('')
 
 const searchUpdated=(term)=>{
   setsearch(term)
 }
+const facebook_logout=()=>{
 
+  
+  settoken(null)
+}
   useEffect(() => {
-    
+    database().ref('/').child('users/').on("child_added", snapshot => {
+      setuser(snapshot.val().name)
+    })
+  
   database().ref('/').child('accesstoken').on("child_added", snapshot => {
     settoken(snapshot.val())
     database().ref('accesstoken').remove();
@@ -54,6 +63,7 @@ const searchUpdated=(term)=>{
         </Container>
   )}
   else{
+    console.log("C_User==>",props.current_user)
     const filteredDonors = props.donors[0].filter(createFilter(searchTerm, KEYS_TO_FILTERS))
     // console.log("Fitered==>",filteredEmails)
     // console.log("Search Term:",searchTerm)
@@ -66,13 +76,16 @@ const searchUpdated=(term)=>{
           style={styles.searchInput}
           placeholder="Serach by Blood Group Or By Person Name"
           />
-          </Header>
-          <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:20,borderBottomWidth:3}}>Welcome To Life Care Blood Bank</Text>
-
-          <Image style={styles.img} source={require('../../Images/logo.png')}/>
-
-          <Button style={{backgroundColor:'red',borderColor:'black',borderWidth:2}} onPress={()=>{props.navigation.navigate('Form')}}>
-              <Text style={{width:'100%',textAlign:'center',fontSize:20,fontWeight:'bold',color:'white'}}>Donate Your Blood</Text>
+           </Header>
+       
+          <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:20,borderBottomWidth:3}}>Welcome {props.current_user} To Life Care Blood Bank</Text>
+         <Image style={styles.img} source={require('../../Images/logo.png')}/>
+         <Button style={styles.btn} onPress={()=>facebook_logout()}>
+             <Text style={styles.btns}>Facebook Logout</Text>
+           </Button>
+      
+          <Button style={styles.btn} onPress={()=>{props.navigation.navigate('Form')}}>
+              <Text style={styles.btns}>Donate Your Blood</Text>
           </Button>
           
           <View>
@@ -133,10 +146,24 @@ const searchUpdated=(term)=>{
           backgroundColor:'white',
           width:300,
         },
+        btns:{
+          width:'100%',
+          textAlign:'center',
+          fontSize:20,
+          fontWeight:'bold',
+          color:'white'
+        },
+        btn:{
+          margin:20,
+          padding:5,
+          display:'flex',
+          alignSelf:'flex-end'
+        },
     });
 
   const mapStateToProps=(state)=>({
     donors:[state.Donors],
+    current_user:state.current_user
   
   })
 
@@ -144,7 +171,6 @@ const searchUpdated=(term)=>{
       set_data:()=>dispatch(set_data()),
       facebook_login:()=>dispatch(facebook_login()),
       get_data:()=>dispatch(get_data()),
-      facebook_logout:()=>dispatch(facebook_logout())
   })
 
 

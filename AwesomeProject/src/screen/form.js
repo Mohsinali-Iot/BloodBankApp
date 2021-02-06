@@ -14,13 +14,9 @@ function Donorform(props){
     Numbers:'',
     BloodGroup:''
   })
-  // console.log("Data",mydata)
   const handle_click=()=>{
-    // console.log("Mydata",mydata)
         var key=database().ref('images/').push().key
-        // console.log(key)
         database().ref('/').child('donors/' + key).set(mydata).then(()=>{
-          // console.log("mydata".mydata)
         })
         set_mydata({
           First_name:'',
@@ -29,27 +25,16 @@ function Donorform(props){
           Numbers:'',
           BloodGroup:''
         })
-        // props.navigation.navigate('Home')
-        
-    // set_mydata({
-    //   First_name:'Mohsin',
-    //   Last_name:'Ali',
-    //   Email:'mohsin@gmail.com',
-    //   Number:'0000-1234567',
-    //   BloodGroup:'A+'
-    // })
+        alert("Submitted successfully")
   }
   return(
 
 
       <Container  style={styles.container}>
         <Text style={{fontSize:30,textAlign:'center'}}>Donate Your Blood</Text>
-        {/* <Button onPress={()=>handle_click()}>
-          <Text>Click</Text>
-      </Button> */}
            <Form style={{borderColor:'black',borderRadius:1,borderWidth:1,marginTop:30,paddingTop:20,paddingBottom:20}}>
            <Item>
-              <Input placeholder="FirstName" value={mydata.First_name} onChangeText={(e)=>set_mydata((prevState) => ({
+              <Input placeholder="FirstName"   value={mydata.First_name} onChangeText={(e)=>set_mydata((prevState) => ({
              ...prevState,First_name:e
     }))} />
             </Item>
